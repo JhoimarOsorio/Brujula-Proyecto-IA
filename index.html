@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f6fb">
+  <title>Brújula · Asistente de la cohorte 8</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <script src="voz.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="tabs" role="tablist" aria-label="Vistas del proyecto">
+      <button type="button" class="tab" role="tab" id="tab-app" aria-selected="true" aria-controls="vista-app" data-tab="vista-app">Chat</button>
+      <button type="button" class="tab" role="tab" id="tab-flujo" aria-selected="false" aria-controls="vista-flujo" data-tab="vista-flujo">Flujo de interacción</button>
+      <button type="button" class="tab" role="tab" id="tab-decisiones" aria-selected="false" aria-controls="vista-decisiones" data-tab="vista-decisiones">IA responsable</button>
+    </nav>
+
+    <section id="vista-app" role="tabpanel" aria-labelledby="tab-app">
+      <div class="estados" role="group" aria-label="Previsualización de estados">
+        <span class="estados-label">Previsualizar:</span>
+        <button type="button" class="btn-estado" data-estado="vacio" aria-pressed="true">Vacío</button>
+        <button type="button" class="btn-estado" data-estado="cargando" aria-pressed="false">Cargando</button>
+        <button type="button" class="btn-estado" data-estado="respuesta" aria-pressed="false">Respuesta</button>
+        <button type="button" class="btn-estado" data-estado="error" aria-pressed="false">No sé</button>
+        <button type="button" class="btn-estado" data-estado="humano" aria-pressed="false">Hablar con alguien</button>
+      </div>
+
+      <div class="app">
+        <header class="app-header">
+          <div class="marca">
+            <span class="logo-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 2.8 14.2 9.8 21.2 12l-7 2.2-2.2 7-2.2-7L2.8 12l7-2.2L12 2.8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                <path d="m19 2 .8 2.2L22 5l-2.2.8L19 8l-.8-2.2L16 5l2.2-.8L19 2Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <div>
+              <h1>Brújula</h1>
+              <p>Asistente de la cohorte 8 · RIWI</p>
+            </div>
+          </div>
+          <button type="button" class="btn-coach-top btn-coach">
+            <span aria-hidden="true">↗</span> Hablar con un coach
+          </button>
+        </header>
+
+        <div class="aviso-fijo" role="note">
+          <span class="aviso-icono" aria-hidden="true">✦</span>
+          <span>Soy una IA y puedo equivocarme. Revisa las fuentes; para notas, salud, dinero o decisiones personales, habla con un coach.</span>
+        </div>
+        <div id="banner-coach" class="banner-coach" role="status" aria-live="polite" hidden></div>
+
+        <main class="chat">
+          <div class="estado on" data-e="vacio">
+            <span class="saludo-icono" aria-hidden="true">✦</span>
+            <p class="eyebrow">ASISTENTE DE COHORTE</p>
+            <h2>¡Hola! ¿En qué te puedo ayudar?</h2>
+            <p class="intro-chat">Pregúntame sobre la cohorte 8. Te responderé con claridad y te mostraré de dónde sale la información.</p>
+            <div class="sugerencias" aria-label="Preguntas sugeridas">
+              <button type="button" class="sug"><span aria-hidden="true">◷</span> ¿Cuándo es la sesión de IA?</button>
+              <button type="button" class="sug"><span aria-hidden="true">↗</span> ¿Cuándo se entrega el proyecto?</button>
+              <button type="button" class="sug"><span aria-hidden="true">☰</span> ¿Dónde veo las reglas de convivencia?</button>
+            </div>
+          </div>
+
+          <div class="estado" data-e="cargando">
+            <div class="q">¿Cuándo es la sesión de IA?</div>
+            <div class="pensando" role="status" aria-live="polite">
+              <span class="dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span>Pensando… buscando en los documentos de la cohorte</span>
+            </div>
+          </div>
+
+          <div class="estado" data-e="respuesta">
+            <div class="q">¿Cuándo es la sesión de IA?</div>
+            <div class="a">
+              <p><strong>La sesión de IA es el jueves a las 2:00 p. m.</strong> Será en el salón del clan. Llega 10 minutos antes para conectar tu equipo.</p>
+              <p class="fuente">Fuente: <a href="#fuente-calendario" class="link-fuente">Calendario de la cohorte</a></p>
+              <p class="ia-aviso">Respuesta generada con IA a partir de 1 fuente: Calendario de la cohorte. Verifícala en la fuente.</p>
+              <div class="acciones">
+                <button type="button" class="chip" aria-pressed="false">👍 Me sirvió</button>
+                <button type="button" class="chip" aria-pressed="false">👎 No es correcto</button>
+                <button type="button" class="chip btn-coach">Hablar con un coach</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="estado" data-e="error">
+            <div class="err" role="alert">
+              <h3>No encontré esa información</h3>
+              <p>No tengo un documento que responda esto con seguridad, y no quiero inventar una respuesta.</p>
+              <p class="ia-aviso err-text">Respuesta generada con IA sin fuentes: no la uses para decisiones importantes.</p>
+              <div class="acciones">
+                <button type="button" class="btn-sec btn-reformular">Reformular pregunta</button>
+                <button type="button" class="btn-primario btn-coach">Hablar con un coach</button>
+              </div>
+            </div>
+            <div class="err" role="alert">
+              <h3>El servicio no respondió</h3>
+              <p>Hubo un problema de conexión y tu pregunta no se envió.</p>
+              <div class="acciones"><button type="button" class="btn-sec btn-reintentar">Reintentar</button></div>
+            </div>
+          </div>
+
+          <div class="estado" data-e="humano">
+            <div class="q">¿Cuánto me falta para aprobar el módulo?</div>
+            <div class="err humano" role="alert">
+              <h3>Este tema lo responde una persona</h3>
+              <p>Las notas, la salud, el dinero y las decisiones sobre una persona las revisa un coach. Yo solo informo y nunca decido.</p>
+              <div class="acciones"><button type="button" class="btn-primario btn-coach">Hablar con un coach</button></div>
+            </div>
+          </div>
+
+          <div class="estado" data-e="dinamico" id="dinamico" aria-live="polite"></div>
+        </main>
+
+        <form id="form" class="chat-form">
+          <label for="pregunta" class="sr-only">Escribe tu pregunta</label>
+          <div class="input-shell">
+            <span class="input-icon" aria-hidden="true">✦</span>
+            <input type="text" id="pregunta" name="pregunta" placeholder="Escribe tu pregunta..." autocomplete="off" required>
+            <button type="button" id="btn-microfono" class="btn-voz" aria-label="Dictar pregunta" title="Dictar pregunta" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="9" y="3" width="6" height="12" rx="3" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3m-4 0h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <button type="button" id="btn-agente-voz" class="btn-voz btn-agente-voz" aria-label="Iniciar conversación por voz" title="Iniciar conversación por voz" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="4" y="7" width="16" height="13" rx="5" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M12 3v4m-3 6h.01M15 13h.01M9 17h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M2 12v3m20-3v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <button type="submit" class="btn-enviar" aria-label="Enviar pregunta">
+              <span>Enviar</span>
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <p class="composer-hint">Puedes preguntar por horarios, entregas y convivencia.</p>
+          <p id="estado-voz" class="estado-voz" role="status" aria-live="polite"></p>
+        </form>
+
+        <footer class="nota">Brújula usa información de la cohorte y no reemplaza a tu coach.</footer>
+      </div>
+    </section>
+
+    <section id="vista-flujo" class="panel" role="tabpanel" aria-labelledby="tab-flujo" hidden>
+      <h2>Recorrido de una pregunta</h2>
+      <p class="panel-intro">Qué ve la persona en cada momento, con las reglas responsables aplicadas.</p>
+      <div class="pasos">
+        <div class="paso"><b class="n">1</b><div><strong>Consulta</strong><small>La persona escribe una pregunta o elige una sugerencia.</small></div></div>
+        <div class="paso"><b class="n">2</b><div><strong>Revisión de reglas</strong><small><code>requiereHumano()</code> detecta temas sensibles y <code>protegerDatos()</code> oculta información personal.</small></div></div>
+        <div class="paso"><b class="n">3</b><div><strong>Espera</strong><small>Se muestra el estado «Pensando…» mientras se busca en la base de conocimiento.</small></div></div>
+        <div class="paso"><b class="n">4</b><div><strong>Respuesta con fuente</strong><small>Respuesta breve con su fuente y opciones para valorarla.</small></div></div>
+        <div class="paso ramal"><b class="n">5</b><div><strong>Derivación o respuesta no disponible</strong><small>Si no hay información confiable o el tema es sensible, se explica y se ofrece hablar con un coach.</small></div></div>
+      </div>
+      <div class="prueba">
+        <h3>Prueba con otro equipo</h3>
+        <ol>
+          <li>Dales una tarea: «averigua cuándo se entrega el proyecto».</li>
+          <li>Observa sin explicar ni ayudar.</li>
+          <li>Anota dónde dudan, qué no encuentran y qué entienden mal.</li>
+          <li>Corrige la maqueta y vuelve a probar.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="vista-decisiones" class="panel" role="tabpanel" aria-labelledby="tab-decisiones" hidden>
+      <h2>Decisiones de uso responsable</h2>
+      <p class="panel-intro">IA responsable desde el inicio: cada decisión, cómo se aplica en Brújula y dónde se verifica.</p>
+      <div class="tabla">
+        <table>
+          <thead><tr><th>Tema</th><th>Decisión</th><th>Cómo se aplica</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Privacidad</strong></td><td>Ocultamos los datos personales antes de procesar la pregunta.</td><td><code>protegerDatos()</code>: [correo], [celular], [documento].</td></tr>
+            <tr><td><strong>Privacidad</strong></td><td>Avisamos qué se guarda de la conversación.</td><td>Información visible en el pie del chat.</td></tr>
+            <tr><td><strong>Sesgos</strong></td><td>Probamos casos que solo cambian un dato personal y comparamos respuestas.</td><td>Pruebas por pares antes de publicar.</td></tr>
+            <tr><td><strong>Explicabilidad</strong></td><td>Cada respuesta cita su fuente y dice si aplicó una regla.</td><td>Línea «Fuente: …» y mensaje de derivación.</td></tr>
+            <tr><td><strong>Consentimiento</strong></td><td>No usamos conversaciones para entrenar sin consentimiento.</td><td>Las preguntas no se reutilizan para entrenar.</td></tr>
+            <tr><td><strong>Divulgación</strong></td><td>Siempre se dice que la respuesta la genera una IA.</td><td>Aviso fijo y nota bajo cada respuesta.</td></tr>
+            <tr><td><strong>Alto impacto</strong></td><td>En temas sensibles, derivamos a una persona; nunca decidimos.</td><td><code>requiereHumano()</code> y botón «Hablar con un coach».</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="marco-legal">Marco legal en Colombia: Ley 1581 de 2012, sobre el tratamiento de datos personales.</p>
+    </section>
+  </div>
+</body>
+</html>
